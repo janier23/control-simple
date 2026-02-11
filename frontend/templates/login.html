@@ -2,21 +2,52 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Elegir negocio</title>
+    <title>Acceso | Tu Negocio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
+<body class="auth-body">
 
-<div class="container">
-    <div class="card">
-        <h2>🏪 Tu negocio</h2>
+<div class="auth-container">
+    <div class="auth-card">
 
-        <form method="post">
-            <input type="text" name="negocio" placeholder="Nombre del negocio" required>
-            <input type="text" name="usuario" placeholder="Usuario (dueño / operadora)" required>
-            <button type="submit">Entrar</button>
+        <div class="auth-header">
+            <span class="auth-icon">🏪</span>
+            <h1>Acceso al sistema</h1>
+            <p>Ingresa los datos de tu negocio</p>
+        </div>
+
+        <form method="post" class="auth-form">
+
+            <div class="form-group">
+                <label for="negocio">Negocio</label>
+                <input 
+                    id="negocio"
+                    type="text" 
+                    name="negocio" 
+                    placeholder="Nombre del negocio"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="usuario">Usuario</label>
+                <input 
+                    id="usuario"
+                    type="text" 
+                    name="usuario" 
+                    placeholder="Dueño u operadora"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn-primary">
+                Entrar al sistema
+            </button>
+
         </form>
+
     </div>
 </div>
 
