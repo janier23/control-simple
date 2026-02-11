@@ -4,6 +4,7 @@ import os
 from datetime import datetime, timedelta
 from backend.reports.pdf_report import generate_pdf
 from backend.reports.excel_report import generate_excel
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 # =========================
@@ -229,17 +230,19 @@ def crear_dueno_si_no_existe():
     conn = conectar()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT COUNT(*) FROM usuarios")
-    total = cursor.fetchone()[0]
+    cursor.execute("SELECT id FROM usuarios WHERE rol = 'dueno'")
+    existe = cursor.fetchone()
 
-    if total == 0:
-        cursor.execute(
-            "INSERT INTO usuarios (nombre, rol) VALUES (?, ?)",
-            ("Dueño", "dueno")
-        )
-        conn.commit()
+    if not existe:
+        password = generate_password_hash("admin123")  # luego la cambias
+        cursor.execute("""
+            INSERT INTO usuarios (nombre, rol, password_hash)
+            VALUES (?, ?, ?)
+        """, ("admin", "dueno", password))
 
+    conn.commit()
     conn.close()
+
 
 crear_tablas()
 crear_dueno_si_no_existe()
@@ -254,19 +257,18 @@ def login():
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT id, rol FROM usuarios WHERE nombre = ?",
+            "SELECT id, rol, password_hash FROM usuarios WHERE nombre = ?",
             (request.form.get("usuario"),)
         )
 
         user = cursor.fetchone()
-        conn.close()
 
-        if user:
+        if user and check_password_hash(user[2], request.form.get("password")):
             session["usuario_id"] = user[0]
             session["rol"] = user[1]
             session["negocio"] = request.form.get("negocio", "Mi negocio")
-
             return redirect("/")
+
 
     return render_template("login.html")
 
