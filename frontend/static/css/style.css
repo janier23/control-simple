@@ -461,3 +461,27 @@ a {
     }
 }
 
+
+/* BRAND / LOGO DASHBOARD */
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #ffffff, #f1f5f9);
+    padding: 14px 22px;
+    border-radius: 16px;
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+    margin-bottom: 8px;
+}
+
+.brand-logo {
+    height: 48px;
+    filter: drop-shadow(0 6px 10px rgba(37,99,235,0.25));
+}
+
+.brand {
+    backdrop-filter: blur(6px);
+}

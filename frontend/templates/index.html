@@ -11,12 +11,13 @@
 <div class="container">
 
     <header class="dashboard-header">
-        <div>
+        <div class="brand">
             <img src="/static/images/logo-controlsimple.png"
                 alt="ControlSimple"
-                style="height: 48px;">
-            <p class="subtitulo">Tu negocio, claro y sencillo.</p>
+                class="brand-logo">
         </div>
+        <p class="subtitulo">Tu negocio, claro y sencillo.</p>
+
 
         <div class="header-actions">
             {% if session["rol"] == "dueno" %}
