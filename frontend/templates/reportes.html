@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reportes</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="acciones-superiores">
+  <a href="/" class="btn-accion">← Volver</a>
+</div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <h1>📅 Reportes & Calendario</h1>
+    <p class="subtitulo">Análisis del negocio por período</p>
+  </header>
+
+  <!-- FILTROS -->
+  <form method="POST" class="filtros">
+    <label>Desde:</label>
+    <input type="date" name="desde" value="{{ desde }}">
+
+    <label>Hasta:</label>
+    <input type="date" name="hasta" value="{{ hasta }}">
+
+    <button type="submit" name="accion" value="filtrar">🔎 Filtrar</button>
+
+    <div class="botones-rapidos">
+      <button type="submit" name="accion" value="hoy" class="btn-accion">📅 Hoy</button>
+      <button type="submit" name="accion" value="semana" class="btn-accion">📆 Semana</button>
+      <button type="submit" name="accion" value="mes" class="btn-accion">🗓️ Mes</button>
+    </div>
+  </form>
+
+  <!-- RESUMEN -->
+  <div class="resumen">
+    <h2>📊 Resultado del período</h2>
+    <p>💰 Ventas: <b>${{ total_ventas }}</b></p>
+    <p>💸 Gastos: <b>${{ total_gastos }}</b></p>
+    <p><b>📈 Ganancia: ${{ ganancia }}</b></p>
+  </div>
+
+  <!-- CALENDARIO -->
+  <h3 class="calendar-title">📅 Calendario mensual</h3>
+
+  <div class="calendar-grid calendar-header">
+    <div>L</div><div>M</div><div>M</div>
+    <div>J</div><div>V</div><div>S</div><div>D</div>
+  </div>
+
+  <div class="calendar-grid" id="calendar"></div>
+
+  <script>
+  const month = "{{ desde[:7] }}";
+
+  fetch(`/calendar/data?month=${month}`)
+    .then(r => r.json())
+    .then(data => renderCalendar(data));
+
+  function renderCalendar(data) {
+    const cal = document.getElementById("calendar");
+    cal.innerHTML = "";
+
+    const today = new Date().toISOString().slice(0, 10);
+    const [year, monthNum] = month.split("-");
+    const firstDay = new Date(year, monthNum - 1, 1);
+    const lastDay = new Date(year, monthNum, 0);
+    const startWeekDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+
+    for (let i = 0; i < startWeekDay; i++) {
+      cal.appendChild(document.createElement("div")).className = "calendar-day empty";
+    }
+
+    for (let d = 1; d <= lastDay.getDate(); d++) {
+      const dayStr = `${year}-${monthNum.padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+      const info = data[dayStr] || { ventas: 0, gastos: 0 };
+
+      const box = document.createElement("div");
+      box.className = "calendar-day";
+
+      if (dayStr === today) {
+        box.style.border = "2px solid #4a90e2";
+      }
+
+      box.innerHTML = `
+        <div class="day-number">${d}</div>
+        ${info.ventas > 0 ? `<div class="ventas">💰 ${info.ventas}</div>` : ""}
+        ${info.gastos > 0 ? `<div class="gastos">💸 ${info.gastos}</div>` : ""}
+      `;
+
+      box.onclick = () => {
+        window.location = `/reportes?desde=${dayStr}&hasta=${dayStr}&producto={{ request.args.get('producto','') }}&usuario={{ request.args.get('usuario','') }}`;
+      };
+
+      cal.appendChild(box);
+    }
+  }
+  </script>
+
+  <!-- HISTORIAL -->
+  <h3>🧠 Historial inteligente</h3>
+
+  <form method="GET" class="historial-filtros">
+    <input type="hidden" name="desde" value="{{ desde }}">
+    <input type="hidden" name="hasta" value="{{ hasta }}">
+    <input type="text" name="producto" placeholder="Producto">
+    <input type="text" name="usuario" placeholder="Usuario">
+    <button type="submit">Buscar</button>
+  </form>
+
+  {% if historial %}
+    <h3 class="historial-title">
+      📊 Resultados del historial
+      {% if request.args.get("producto") %}
+        — Producto: <strong>{{ request.args.get("producto") }}</strong>
+      {% endif %}
+      {% if request.args.get("usuario") %}
+        — Usuario: <strong>{{ request.args.get("usuario") }}</strong>
+      {% endif %}
+    </h3>
+  {% endif %}
+
+  {% if historial is not none %}
+  <div class="historial-box">
+    <table class="tabla">
+      <tr>
+        <th>Fecha</th>
+        <th>Producto</th>
+        <th>Cant.</th>
+        <th>Total</th>
+        <th>Usuario</th>
+      </tr>
+      {% for h in historial %}
+      <tr>
+        <td>{{ h.fecha }}</td>
+        <td>{{ h.producto }}</td>
+        <td>{{ h.cantidad }}</td>
+        <td>${{ h.total }}</td>
+        <td>{{ h.usuario }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    {% if historial|length == 0 %}
+      <p class="sin-resultados">No se encontraron resultados.</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- DETALLES + EXPORTAR -->
+  <div class="cards-reportes">
+
+    <div class="card-accion" onclick="toggleCard('ventas')">
+      📦 <strong>Ventas del período</strong>
+      <p>Ver detalle de ventas</p>
+    </div>
+
+    <div id="ventas" class="card-detalle oculto">
+      {% for v in ventas %}
+        <p>
+          {{ v.producto }} (x{{ v.cantidad }}) — ${{ v.total }}<br>
+          <small>{{ v.fecha }} · {{ v.usuario }}</small>
+        </p>
+      {% else %}
+        <p>No hay ventas en este período</p>
+      {% endfor %}
+    </div>
+
+    <div class="card-accion" onclick="toggleCard('gastos')">
+      💸 <strong>Gastos del período</strong>
+      <p>Ver detalle de gastos</p>
+    </div>
+
+    <div id="gastos" class="card-detalle oculto">
+      {% for g in gastos %}
+        <p>
+          {{ g.descripcion }} — ${{ g.monto }}<br>
+          <small>{{ g.fecha }} · {{ g.usuario }}</small>
+        </p>
+      {% else %}
+        <p>No hay gastos en este período</p>
+      {% endfor %}
+    </div>
+
+    <div class="export-buttons">
+      <a class="btn-accion" href="/export/pdf?from={{ desde }}&to={{ hasta }}">📄 Exportar PDF</a>
+      <a class="btn-accion" href="/export/excel?from={{ desde }}&to={{ hasta }}">📊 Exportar Excel</a>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function toggleCard(id) {
+  document.getElementById(id).classList.toggle("oculto");
+}
+</script>
+
+</body>
+</html>

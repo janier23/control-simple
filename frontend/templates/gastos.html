@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de gastos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>📋 Gastos</h2>
+
+        {% if gastos %}
+            <ul>
+                {% for g in gastos %}
+                    <li>
+                        {{ g[1] }} — ${{ g[2] }} <br>
+                        <small>
+                            {{ g[3] }} — Registrado por: {{ g[4] }}
+                        </small>
+
+                        {% if session["rol"] == "dueno" %}
+                            <br>
+                            <a href="/gastos/eliminar/{{ g[0] }}"
+                            onclick="return confirm('¿Eliminar este gasto?')">
+                            🗑 Eliminar
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay gastos registrados.</p>
+        {% endif %}
+    </div>
+
+    <a href="/" class="btn-accion">⬅ Volver</button></a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar gasto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>➕ Registrar gasto</h1>
+
+    <form method="POST" action="/gastos/nuevo">
+
+        <label>Descripción</label>
+        <input
+            type="text"
+            name="descripcion"
+            placeholder="Ej: alquiler, luz, transporte"
+            required
+        >
+
+        <label>Monto</label>
+        <input
+            type="number"
+            name="monto"
+            step="0.01"
+            placeholder="Ej: 50"
+            required
+        >
+
+        <button type="submit" class="btn-accion">
+            Guardar gasto
+        </button>
+
+    </form>
+
+    <br>
+    <a href="/" class="btn-accion">⬅ Volver</a>
+
+</div>
+
+</body>
+</html>

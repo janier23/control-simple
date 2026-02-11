@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Control Simple</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>📊 Control Simple</h1>
+        <p class="subtitulo">Tu negocio, claro y sencillo.</p>
+    </header>
+
+    <div class="acciones">
+        <a href="/logout" class="btn-accion btn-danger">Cerrar sesión</a>
+        {% if session["rol"] == "dueno" %}
+            <a href="/productos" class="btn-accion">📦 Productos</a>
+        {% endif %}
+
+    </div>
+
+
+    <div class="resumen">
+        <h2>📈 Resumen</h2>
+        <p>Ventas: ${{ total_ventas }}</p>
+        <p>Gastos: ${{ total_gastos }}</p>
+        <p><b>Ganancia: ${{ ganancia }}</b></p>
+
+        <hr>
+
+        <h2>📅 Resumen por período</h2>
+
+        <div class="resumen">
+            <p><b>Hoy</b> — Ventas: ${{ ventas_hoy }} | Gastos: ${{ gastos_hoy }}</p>
+            <p><b>Semana</b> — Ventas: ${{ ventas_semana }} | Gastos: ${{ gastos_semana }}</p>
+            <p><b>Mes</b> — Ventas: ${{ ventas_mes }} | Gastos: ${{ gastos_mes }}</p>
+        </div>
+        
+
+    </div>
+
+    <div class="acciones">
+        <a href="/ventas/nueva" class="btn-accion">➕ Registrar venta</a>
+        <a href="/ventas" class="btn-accion">📄 Ver ventas</a>
+        <a href="/gastos/nuevo" class="btn-accion">➕ Registrar gasto</a>
+        <a href="/gastos" class="btn-accion">📄 Ver gastos</a>
+        <a href="/reportes" class="btn-accion">📅 Reportes</a>
+        {% if session["rol"] == "dueno" %}
+        <form method="POST" accion="/cierres/semana" style="margin-top: 10px;">
+            <button class="btn-accion btn-danger"
+                    onclick="return confirm('¿Cerrar la semana actual?')">
+                🔒 Cerrar semana
+            </button>
+        </form>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>

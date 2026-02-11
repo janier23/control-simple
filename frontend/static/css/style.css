@@ -1,0 +1,209 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+}
+
+header {
+    text-align-last: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+.subtitulo {
+    color: #555;
+}
+
+.resumen {
+    background: rgb(252, 243, 243);
+    padding: 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+    width: 350px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.acciones {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.btn-accion {
+    background: #2f80ed;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+}
+
+.btn-accion:hover {
+    background: #1c5fd4;
+    transform: scale(1.05);
+}
+
+.btn-danger {
+    background: #e63946;
+}
+
+.acciones-periodo {
+  display: flex;
+  justify-content: flex-end; /* 👉 los manda a la derecha */
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-secundario {
+  background: #f2f2f2;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.btn-secundario:hover {
+  background: #e0e0e0;
+}
+
+.acciones-superiores {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.btn-volver {
+  background: #6c757d;
+}
+
+.btn-volver:hover {
+  background: #5a6268;
+}
+
+.cards-reportes {
+  display: grid;
+  gap: 16px;
+  max-width: 600px;
+  margin: 30px auto;
+}
+
+.card-accion {
+  background: #2f80ed;
+  color: white;
+  padding: 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.card-accion:hover {
+  background: #1c60c7;
+}
+
+.card-accion p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.card-detalle {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.oculto {
+  display: none;
+}
+
+.card-accion.disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+}
+
+.calendar-title {
+  margin-top: 40px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  max-width: 400px;
+  margin: 0 auto 30px;
+}
+
+.calendar-day {
+  background: #f6f8fb;
+  border-radius: 12px;
+  padding: 6px;
+  min-height: 65px;
+  cursor: pointer;
+  font-size: 12px;
+  position: relative;
+}
+
+.calendar-day:hover {
+  background: #e9f0ff;
+}
+
+.calendar-day.empty {
+  background: transparent;
+  cursor: default;
+}
+
+.day-number {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.ventas {
+  color: #1a8f3c;
+  font-weight: 600;
+}
+
+.gastos {
+  color: #c0392b;
+  font-weight: 600;
+}
+
+.calendar-header div {
+  text-align: center;
+  font-weight: 600;
+  color: #666;
+}
+
+.day-number {
+  font-size: 13px;
+}
+
+.ventas, .gastos {
+  font-size: 11px;
+}
+
+.historial-box {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f4f7fb;
+  border-radius: 14px;
+}
+
+.historial-title {
+  margin-top: 30px;
+}
+
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de ventas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>📋 Ventas</h2>
+
+        {% if ventas %}
+            <ul>
+                {% for v in ventas %}
+                    <li>
+                        {{ v[1] }} (x{{ v[2] }}) — ${{ v[3] }} <br>
+                        <small>
+                            {{ v[4] }} — Registrado por: {{ v[5] }}
+                        </small>
+
+                        {% if session["rol"] == "dueno" %}
+                            <br>
+                            <a href="/ventas/eliminar/{{ v[0] }}"
+                            onclick="return confirm('¿Eliminar esta venta?')">
+                            🗑 Eliminar
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay ventas registradas.</p>
+        {% endif %}
+    </div>
+
+    <a href="/"class="btn-accion">⬅ Volver</button></a>
+</div>
+
+</body>
+</html>

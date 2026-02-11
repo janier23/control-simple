@@ -1,0 +1,15 @@
+{
+  "name": "Control Simple",
+  "short_name": "Control",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f2f2f2",
+  "theme_color": "#2f7df6",
+  "icons": [
+    {
+      "src": "/static/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
