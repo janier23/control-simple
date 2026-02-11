@@ -212,7 +212,14 @@ h1 {
 
 .auth-body {
     min-height: 100vh;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
+    background:
+      linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.88),
+        rgba(30, 41, 59, 0.92)
+      ),
+      url("/static/images/login-hero.png") center / cover no-repeat;
+
     display: flex;
     align-items: center;
     justify-content: center;
