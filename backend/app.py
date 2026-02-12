@@ -2,8 +2,8 @@ from flask import Flask, render_template, request, redirect, session, send_file
 import sqlite3
 import os
 from datetime import datetime, timedelta
-from reports.pdf_report import generate_pdf
-from reports.excel_report import generate_excel
+from .reports.pdf_report import generate_pdf
+from .reports.excel_report import generate_excel
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
