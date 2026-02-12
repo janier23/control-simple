@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, send_file, Blueprint, url_for
+from flask import Flask, render_template, request, redirect, session, send_file
 import sqlite3
 import os
 from datetime import datetime, timedelta
@@ -6,14 +6,6 @@ from .reports.pdf_report import generate_pdf
 from .reports.excel_report import generate_excel
 from werkzeug.security import generate_password_hash, check_password_hash
 from .reports.routes import reports_bp
-
-
-
-reports_bp = Blueprint(
-    "reports",
-    __name__,
-    url_prefix="/reports"
-)
 
 # =========================
 # CONFIG
@@ -28,6 +20,7 @@ app = Flask(
 )
 app.secret_key = "control_simple_secreto"
 app.register_blueprint(reports_bp)
+
 
 
 # =========================
