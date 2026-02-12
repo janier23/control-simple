@@ -7,7 +7,6 @@ from .reports.excel_report import generate_excel
 from werkzeug.security import generate_password_hash, check_password_hash
 from .reports.routes import reports_bp
 
-app.register_blueprint(reports_bp)
 
 
 reports_bp = Blueprint(
@@ -28,6 +27,8 @@ app = Flask(
     static_folder="../frontend/static"
 )
 app.secret_key = "control_simple_secreto"
+app.register_blueprint(reports_bp)
+
 
 # =========================
 # DATABASE
