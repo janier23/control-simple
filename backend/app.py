@@ -2,8 +2,8 @@ from flask import Flask, render_template, request, redirect, session, send_file
 import sqlite3
 import os
 from datetime import datetime, timedelta
-from backend.reports.pdf_report import generate_pdf
-from backend.reports.excel_report import generate_excel
+from reports.pdf_report import generate_pdf
+from reports.excel_report import generate_excel
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -257,20 +257,24 @@ def login():
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT id, rol, password_hash FROM usuarios WHERE nombre = ?",
-            (request.form.get("usuario"),)
+            "SELECT id, rol FROM usuarios WHERE nombre = ? AND password = ?",
+            (
+                request.form.get("usuario"),
+                request.form.get("password")
+            )
         )
 
         user = cursor.fetchone()
+        conn.close()
 
-        if user and check_password_hash(user[2], request.form.get("password")):
+        if user:
             session["usuario_id"] = user[0]
             session["rol"] = user[1]
             session["negocio"] = request.form.get("negocio", "Mi negocio")
             return redirect("/")
 
-
     return render_template("login.html")
+
 
 # ======================
 # LOGOUT  👈 AQUÍ VA
@@ -906,4 +910,4 @@ def calendar_data():
 # RUN
 # =========================
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
