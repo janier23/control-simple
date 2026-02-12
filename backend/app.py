@@ -257,17 +257,17 @@ def login():
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT id, rol FROM usuarios WHERE nombre = ? AND password = ?",
-            (
-                request.form.get("usuario"),
-                request.form.get("password")
-            )
+            "SELECT id, rol, password_hash FROM usuarios WHERE nombre = ? AND activo = 1",
+            (request.form.get("usuario"),)
         )
 
         user = cursor.fetchone()
         conn.close()
 
-        if user:
+        if user and check_password_hash(
+            user[2],
+            request.form.get("password")
+        ):
             session["usuario_id"] = user[0]
             session["rol"] = user[1]
             session["negocio"] = request.form.get("negocio", "Mi negocio")
