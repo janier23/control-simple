@@ -2,8 +2,13 @@ from openpyxl import Workbook
 from openpyxl.styles import Font
 import os
 from datetime import datetime
+from flask import send_file
+import io
 
 def generate_excel(data):
+    buffer = io.BytesIO()
+    buffer.write(b"Reporte PDF")  # ejemplo
+    buffer.seek(0)
     os.makedirs("tmp", exist_ok=True)
     filename = f"reporte_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
     path = os.path.join("tmp", filename)

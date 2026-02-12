@@ -1,11 +1,20 @@
-from flask import Flask, render_template, request, redirect, session, send_file
+from flask import Flask, render_template, request, redirect, session, send_file, Blueprint, url_for
 import sqlite3
 import os
 from datetime import datetime, timedelta
 from .reports.pdf_report import generate_pdf
 from .reports.excel_report import generate_excel
 from werkzeug.security import generate_password_hash, check_password_hash
+from .reports.routes import reports_bp
 
+app.register_blueprint(reports_bp)
+
+
+reports_bp = Blueprint(
+    "reports",
+    __name__,
+    url_prefix="/reports"
+)
 
 # =========================
 # CONFIG
@@ -902,6 +911,27 @@ def calendar_data():
         }
 
     return data
+
+@reports_bp.route("/")
+def reports():
+    if "usuario_id" not in session:
+        return redirect(url_for("auth.login"))
+
+    return render_template("reports/reports.html")
+
+@reports_bp.route("/pdf")
+def report_pdf():
+    if "usuario_id" not in session:
+        return redirect(url_for("auth.login"))
+
+    return generate_pdf()
+
+@reports_bp.route("/excel")
+def report_excel():
+    if "usuario_id" not in session:
+        return redirect(url_for("auth.login"))
+
+    return generate_excel()
 
 
 

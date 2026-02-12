@@ -1,11 +1,28 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Reportes</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="reports-container">
+
+    <header class="reports-header">
+        <h2 class="section-title">📊 Reportes</h2>
+        <p class="section-subtitle">
+            Descargá los reportes del sistema en el formato que necesites.
+        </p>
+    </header>
+
+    <div class="report-actions">
+        <a href="{{ url_for('reports.report_pdf') }}" class="btn btn-primary">
+            📄 Descargar PDF
+        </a>
+
+        <a href="{{ url_for('reports.report_excel') }}" class="btn btn-success">
+            📊 Descargar Excel
+        </a>
+    </div>
+
+</section>
+
 
 <div class="acciones-superiores">
   <a href="/" class="btn-accion">← Volver</a>
@@ -201,5 +218,4 @@ function toggleCard(id) {
 }
 </script>
 
-</body>
-</html>
+{% endblock %}
